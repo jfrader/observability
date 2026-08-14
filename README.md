@@ -137,24 +137,18 @@ Node (`readNodeEnv()`): same names without the `VITE_` prefix.
 
 ## Publishing
 
-Push an annotated `v<package-version>` tag from `main`. The release workflow
-checks the tag and lockfile, builds and tests once, packs one immutable tarball,
-then verifies or publishes that exact artifact to npmjs and GitHub Packages.
-Retries are safe: an existing matching artifact is accepted, while a different
-artifact at the same version fails the release.
-
-The npmjs package uses a trusted publisher for
-`jfrader/observability` → `.github/workflows/publish.yml`; GitHub Packages uses
-the workflow's scoped `GITHUB_TOKEN`. Until the trusted publisher is linked on
-npmjs, publish npmjs manually instead:
+Manual CLI flow (same as every jfrader package):
 
 ```bash
-npm publish --registry=https://registry.npmjs.org
+npm publish                                              # npmjs (repo .npmrc pins @jfrader → npmjs)
+gh auth refresh -s write:packages                        # once: add GH Packages scope to the gh token
+NODE_AUTH_TOKEN="$(gh auth token)" \
+  npm publish --registry=https://npm.pkg.github.com      # GitHub Packages
 ```
 
-(The `--registry` flag is required because `~/.npmrc` maps the `@jfrader`
-scope to GitHub Packages.)
-
-GitHub creates a personal package as private on its first publication. After
-the first workflow succeeds, make it public once from the package's **Package
-settings → Danger Zone → Change visibility**. Later versions keep that setting.
+The first GitHub Packages publish creates the package as **private**; make it
+public once from **Package settings → Danger Zone → Change visibility** (later
+versions keep that setting). The `publish.yml` workflow (tag `v*`) exists for
+changelog parity: its GitHub Packages step works with the scoped `GITHUB_TOKEN`,
+its npmjs step needs a trusted publisher — publishing npmjs from the CLI is the
+normal path.
