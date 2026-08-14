@@ -137,7 +137,24 @@ Node (`readNodeEnv()`): same names without the `VITE_` prefix.
 
 ## Publishing
 
-`v<version>` annotated tag on `main` → workflow verifies identity, packs once,
-publishes the exact tarball to npmjs (trusted publisher, provenance) and
-GitHub Packages. Bump `version` in `package.json` and `package-lock.json` in
-the same commit as the tag.
+Push an annotated `v<package-version>` tag from `main`. The release workflow
+checks the tag and lockfile, builds and tests once, packs one immutable tarball,
+then verifies or publishes that exact artifact to npmjs and GitHub Packages.
+Retries are safe: an existing matching artifact is accepted, while a different
+artifact at the same version fails the release.
+
+The npmjs package uses a trusted publisher for
+`jfrader/observability` → `.github/workflows/publish.yml`; GitHub Packages uses
+the workflow's scoped `GITHUB_TOKEN`. Until the trusted publisher is linked on
+npmjs, publish npmjs manually instead:
+
+```bash
+npm publish --registry=https://registry.npmjs.org
+```
+
+(The `--registry` flag is required because `~/.npmrc` maps the `@jfrader`
+scope to GitHub Packages.)
+
+GitHub creates a personal package as private on its first publication. After
+the first workflow succeeds, make it public once from the package's **Package
+settings → Danger Zone → Change visibility**. Later versions keep that setting.
