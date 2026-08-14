@@ -88,6 +88,12 @@ jobs:
           package-manager-cache: false
 
       - name: Publish to GitHub Packages
-        run: node scripts/publish-registry.mjs "${{ steps.pack.outputs.artifact }}" https://npm.pkg.github.com
+        # Direct publish of the exact packed artifact. The publish-registry.mjs
+        # pre-check is not used here: `npm view` against npm.pkg.github.com can
+        # fall back to npmjs data for a package that does not exist yet on GH,
+        # which would skip the first publish. The runner's .npmrc maps the
+        # @jfrader scope to GitHub Packages and NODE_AUTH_TOKEN is the scoped
+        # GITHUB_TOKEN, so plain `npm publish` targets GH.
+        run: npm publish "${{ steps.pack.outputs.artifact }}" --ignore-scripts --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
