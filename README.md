@@ -137,22 +137,18 @@ Node (`readNodeEnv()`): same names without the `VITE_` prefix.
 
 ## Publishing
 
-Manual CLI flow (same as every jfrader package):
+Primary flow (like changelog): push an annotated `v<package-version>` tag from
+`main`. The release workflow checks tag + lockfile, builds and tests once,
+packs one immutable tarball, then publishes or verifies that exact artifact on
+**npmjs** (trusted publisher) and **GitHub Packages** (scoped `GITHUB_TOKEN`).
+Retries are safe: an existing matching artifact is accepted, a different
+artifact at the same version fails.
 
-```bash
-npm publish                                              # npmjs (repo .npmrc pins @jfrader → npmjs)
-# GitHub Packages: the classic PAT in ~/.secrets needs write:packages scope.
-# Override the @jfrader:registry scope key itself — npm ignores --registry
-# for scoped packages.
-T=$(grep '^GITHUB_PACKAGES_TRUCOSHI_PRIVATE_CLASSIC_TOKEN' ~/.secrets | cut -d= -f2 | tr -d ' "')
-npm publish --@jfrader:registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken="$T"
-```
+Manual CLI fallback for npmjs (no tag needed): plain `npm publish` works
+because the repo `.npmrc` pins the `@jfrader` scope to npmjs (the user-level
+`~/.npmrc` maps it to GitHub Packages).
 
-The first GitHub Packages publish creates the package as **private**; make it
-public once from **Package settings → Danger Zone → Change visibility** (later
-versions keep that setting). Do not set `publishConfig.registry` in
-`package.json`: npm applies it over every `--registry` flag and scope key,
-which breaks the GitHub Packages publish. The `publish.yml` workflow (tag
-`v*`) exists for changelog parity: its GitHub Packages step works with the
-scoped `GITHUB_TOKEN`, its npmjs step needs a trusted publisher — publishing
-npmjs from the CLI is the normal path.
+History: `0.1.0` was CLI-published (its manifest carried
+`publishConfig.registry`, which overrides registry flags — incompatible with
+workflow republishing); `0.1.1+` go through the workflow. GitHub Packages
+packages are created public when published from a public repository.
