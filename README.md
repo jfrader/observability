@@ -141,17 +141,18 @@ Manual CLI flow (same as every jfrader package):
 
 ```bash
 npm publish                                              # npmjs (repo .npmrc pins @jfrader → npmjs)
-unset GITHUB_TOKEN GH_TOKEN                               # gh auth refresh ignores env tokens
-gh auth refresh -s write:packages                        # once: add GH Packages scope to the gh token
-npm login --registry=https://npm.pkg.github.com          # username jfrader, password = gh auth token
-npm publish --registry=https://npm.pkg.github.com        # GitHub Packages
+# GitHub Packages: the classic PAT in ~/.secrets needs write:packages scope.
+# Override the @jfrader:registry scope key itself — npm ignores --registry
+# for scoped packages.
+T=$(grep '^GITHUB_PACKAGES_TRUCOSHI_PRIVATE_CLASSIC_TOKEN' ~/.secrets | cut -d= -f2 | tr -d ' "')
+npm publish --@jfrader:registry=https://npm.pkg.github.com --//npm.pkg.github.com/:_authToken="$T"
 ```
 
 The first GitHub Packages publish creates the package as **private**; make it
 public once from **Package settings → Danger Zone → Change visibility** (later
 versions keep that setting). Do not set `publishConfig.registry` in
-`package.json`: npm applies it over the `--registry` flag, which breaks the
-GitHub Packages publish. The `publish.yml` workflow (tag `v*`) exists for
-changelog parity: its GitHub Packages step works with the scoped
-`GITHUB_TOKEN`, its npmjs step needs a trusted publisher — publishing npmjs
-from the CLI is the normal path.
+`package.json`: npm applies it over every `--registry` flag and scope key,
+which breaks the GitHub Packages publish. The `publish.yml` workflow (tag
+`v*`) exists for changelog parity: its GitHub Packages step works with the
+scoped `GITHUB_TOKEN`, its npmjs step needs a trusted publisher — publishing
+npmjs from the CLI is the normal path.
