@@ -12,4 +12,4 @@ export { createNoopAnalytics, createNoopErrorReporter } from "../noop.js";
 export { createBeaconAnalytics } from "../beacon.js";
 export * from "../redact.js";
 export { readBrowserEnv } from "../env.js";
-export { ObservabilityProvider, ObservabilityErrorBoundary, useObservability, useTrack, } from "./react.js";
+export { ObservabilityProvider, ObservabilityErrorBoundary, type ObservabilityErrorBoundaryProps, useObservability, useTrack, } from "./react.js";

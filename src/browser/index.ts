@@ -16,6 +16,7 @@ export { readBrowserEnv } from "../env.js";
 export {
   ObservabilityProvider,
   ObservabilityErrorBoundary,
+  type ObservabilityErrorBoundaryProps,
   useObservability,
   useTrack,
 } from "./react.js";
