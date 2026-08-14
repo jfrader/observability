@@ -1,0 +1,131 @@
+{
+  "name": "@jfrader/observability",
+  "version": "0.1.0",
+  "packageManager": "npm@11.18.0",
+  "description": "Strategy-based observability for small apps: error tracking (Sentry, pluggable) and analytics (PostHog, Plausible/Umami-style beacon, pluggable) behind one tiny API. Zero runtime dependencies.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "jfrader",
+    "email": "jfrader@pm.me",
+    "url": "https://github.com/jfrader"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfrader/observability.git"
+  },
+  "homepage": "https://github.com/jfrader/observability#readme",
+  "bugs": {
+    "url": "https://github.com/jfrader/observability/issues"
+  },
+  "keywords": [
+    "observability",
+    "analytics",
+    "sentry",
+    "posthog",
+    "error-tracking",
+    "strategy",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js",
+      "default": "./dist/browser/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.js",
+      "default": "./dist/node/index.js"
+    },
+    "./providers/sentry-browser": {
+      "types": "./dist/providers/sentry-browser.d.ts",
+      "import": "./dist/providers/sentry-browser.js",
+      "default": "./dist/providers/sentry-browser.js"
+    },
+    "./providers/sentry-node": {
+      "types": "./dist/providers/sentry-node.d.ts",
+      "import": "./dist/providers/sentry-node.js",
+      "default": "./dist/providers/sentry-node.js"
+    },
+    "./providers/posthog-browser": {
+      "types": "./dist/providers/posthog-browser.d.ts",
+      "import": "./dist/providers/posthog-browser.js",
+      "default": "./dist/providers/posthog-browser.js"
+    },
+    "./providers/posthog-node": {
+      "types": "./dist/providers/posthog-node.d.ts",
+      "import": "./dist/providers/posthog-node.js",
+      "default": "./dist/providers/posthog-node.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@sentry/node": "*",
+    "@sentry/react": "*",
+    "posthog-js": "*",
+    "posthog-node": "*",
+    "react": "*"
+  },
+  "peerDependenciesMeta": {
+    "@sentry/node": {
+      "optional": true
+    },
+    "@sentry/react": {
+      "optional": true
+    },
+    "posthog-js": {
+      "optional": true
+    },
+    "posthog-node": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "npm run typecheck && npm test && npm run build",
+    "prepare": "npm run build",
+    "prepublish": "npm run build",
+    "prepublishOnly": "npm run check"
+  },
+  "devDependencies": {
+    "@sentry/node": "^10.70.0",
+    "@sentry/react": "^10.64.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "jsdom": "^26.1.0",
+    "posthog-js": "^1.231.0",
+    "posthog-node": "^4.9.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}
