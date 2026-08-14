@@ -91,9 +91,9 @@ jobs:
         # Direct publish of the exact packed artifact. The publish-registry.mjs
         # pre-check is not used here: `npm view` against npm.pkg.github.com can
         # fall back to npmjs data for a package that does not exist yet on GH,
-        # which would skip the first publish. The runner's .npmrc maps the
-        # @jfrader scope to GitHub Packages and NODE_AUTH_TOKEN is the scoped
-        # GITHUB_TOKEN, so plain `npm publish` targets GH.
-        run: npm publish "${{ steps.pack.outputs.artifact }}" --ignore-scripts --access=public
+        # which would skip the first publish. The explicit scope-key override
+        # is required: the repo's committed .npmrc maps @jfrader to npmjs
+        # (for CLI publishing) and beats the runner's GH scope mapping.
+        run: npm publish "${{ steps.pack.outputs.artifact }}" --ignore-scripts --access=public --@jfrader:registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
