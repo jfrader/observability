@@ -68,6 +68,7 @@
       "import": "./dist/providers/posthog-node.js",
       "default": "./dist/providers/posthog-node.js"
     },
+    "./dist/*": "./dist/*",
     "./package.json": "./package.json"
   },
   "files": [
