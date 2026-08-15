@@ -36,12 +36,14 @@ const STANDALONE_LONG_TOKEN = /(^|[^A-Za-z0-9_-])[A-Za-z0-9_-]{43}(?=$|[^A-Za-z0
  */
 export function redactSensitiveUrl(value, options) {
     const queryKeys = options?.queryKeys ?? SENSITIVE_QUERY_KEYS;
+    const additionalQueryKeys = options?.additionalQueryKeys;
     let scrubbed = redactLongTokens(value, options?.tokenRegex);
     try {
         const absolute = /^[a-z][a-z\d+.-]*:/i.test(scrubbed);
         const parsed = new URL(scrubbed, "https://redaction.invalid");
         for (const key of Array.from(parsed.searchParams.keys())) {
-            if (queryKeys.has(key.toLowerCase())) {
+            const normalizedKey = key.toLowerCase();
+            if (queryKeys.has(normalizedKey) || additionalQueryKeys?.has(normalizedKey)) {
                 parsed.searchParams.set(key, "[Filtered]");
             }
         }

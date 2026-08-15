@@ -1,5 +1,5 @@
 import { Component, createContext, useContext, type Context, type ReactNode } from "react";
-import type { Observability } from "../types.js";
+import type { CaptureContext, Observability } from "../types.js";
 
 const ObservabilityContext: Context<Observability | null> = createContext<Observability | null>(null);
 
@@ -29,8 +29,8 @@ export interface ObservabilityErrorBoundaryProps {
   children: ReactNode;
   /** Rendered instead of children after a caught error. */
   fallback?: ReactNode | ((error: Error) => ReactNode);
-  /** Called before the error is reported. */
-  onError?: (error: Error, info: { componentStack: string }) => void;
+  /** Called before reporting; return per-event context to attach to this error. */
+  onError?: (error: Error, info: { componentStack: string }) => CaptureContext | void;
 }
 
 interface ObservabilityErrorBoundaryState {
@@ -56,8 +56,11 @@ export class ObservabilityErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, info: { componentStack: string }): void {
-    this.props.onError?.(error, info);
-    this.context?.captureException(error, { extra: { componentStack: info.componentStack } });
+    const context = this.props.onError?.(error, info);
+    this.context?.captureException(error, {
+      ...context,
+      extra: { componentStack: info.componentStack, ...context?.extra },
+    });
   }
 
   render(): ReactNode {

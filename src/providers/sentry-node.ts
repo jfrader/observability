@@ -58,6 +58,7 @@ export function createSentryNodeErrorReporter(config: SentryNodeConfig): ErrorRe
     environment: config.environment,
     release: config.release,
     tracesSampleRate: config.tracesSampleRate ?? 0,
+    sendDefaultPii: false,
     beforeSend(event, hint) {
       let next = event;
       if (redactUrls) {

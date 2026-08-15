@@ -130,7 +130,8 @@ Node (`readNodeEnv()`): same names without the `VITE_` prefix.
 
 - Sentry adapters scrub credentials/tokens from URLs and breadcrumbs by
   default (`redact` option), send no PII, errors only (`tracesSampleRate: 0`).
-- PostHog browser adapter: autocapture off, session recording off.
+- PostHog browser adapter: autocapture off, session recording off, sensitive
+  URL values scrubbed before send (`redact` accepts app-specific query keys).
 - Beacon adapter: sends `{ name, data, url, ts }`, supports `redactUrl`
   to strip share codes; never throws.
 - Noop fallbacks: no provider configured → no network calls, no console noise.

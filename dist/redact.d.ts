@@ -10,6 +10,8 @@ export declare const SENSITIVE_QUERY_KEYS: Set<string>;
 export interface RedactUrlOptions {
     /** Query keys to scrub; defaults to {@link SENSITIVE_QUERY_KEYS}. */
     queryKeys?: ReadonlySet<string>;
+    /** App-specific query keys to scrub in addition to the defaults. */
+    additionalQueryKeys?: ReadonlySet<string>;
     /** Regex to scrub long tokens embedded in the value (applied to the whole string). */
     tokenRegex?: RegExp;
 }

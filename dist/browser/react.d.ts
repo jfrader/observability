@@ -1,5 +1,5 @@
 import { Component, type Context, type ReactNode } from "react";
-import type { Observability } from "../types.js";
+import type { CaptureContext, Observability } from "../types.js";
 /**
  * Provide an {@link Observability} facade to the component tree.
  * Use `useTrack` / `useObservability` to consume it.
@@ -15,10 +15,10 @@ export interface ObservabilityErrorBoundaryProps {
     children: ReactNode;
     /** Rendered instead of children after a caught error. */
     fallback?: ReactNode | ((error: Error) => ReactNode);
-    /** Called before the error is reported. */
+    /** Called before reporting; return per-event context to attach to this error. */
     onError?: (error: Error, info: {
         componentStack: string;
-    }) => void;
+    }) => CaptureContext | void;
 }
 interface ObservabilityErrorBoundaryState {
     error: Error | null;

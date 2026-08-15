@@ -48,9 +48,10 @@ describe("createPosthogBrowserAnalytics", () => {
     create({ key: "phc_key", host: "https://us.i.posthog.com" });
     expect(posthogMock.init).toHaveBeenCalledWith("phc_key", {
       api_host: "https://us.i.posthog.com",
-      capture_pageview: true,
+      capture_pageview: "history_change",
       autocapture: false,
       disable_session_recording: true,
+      before_send: [expect.any(Function)],
     });
   });
 
@@ -86,5 +87,41 @@ describe("createPosthogBrowserAnalytics", () => {
       "phc_key",
       expect.objectContaining({ capture_pageview: false, persistence: "memory" }),
     );
+  });
+
+  it("redacts sensitive urls before sending", async () => {
+    const create = await loadAdapter();
+    create({ key: "phc_key", host: "https://us.i.posthog.com" });
+    const options = posthogMock.init.mock.calls[0][1] as { before_send: Array<(event: any) => any> };
+    const event = options.before_send[0]({
+      event: "$pageview",
+      properties: {
+        $current_url: "https://example.com/reset?token=secret",
+        $referrer: "https://example.com/login?code=secret",
+      },
+    });
+    expect(event.properties.$current_url).not.toContain("secret");
+    expect(event.properties.$referrer).not.toContain("secret");
+  });
+
+  it("supports app-specific query redaction and preserves custom hooks", async () => {
+    const customHook = vi.fn((event) => event);
+    const create = await loadAdapter();
+    create({
+      key: "phc_key",
+      host: "https://us.i.posthog.com",
+      redact: { additionalQueryKeys: new Set(["invite"]) },
+      options: { before_send: customHook },
+    });
+    const options = posthogMock.init.mock.calls[0][1] as { before_send: Array<(event: any) => any> };
+    const event = options.before_send.reduce(
+      (next, hook) => hook(next),
+      {
+        event: "$pageview",
+        properties: { $current_url: "https://example.com/?invite=secret&token=also-secret" },
+      },
+    );
+    expect(event.properties.$current_url).not.toContain("secret");
+    expect(customHook).toHaveBeenCalledOnce();
   });
 });

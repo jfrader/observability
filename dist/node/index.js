@@ -7,6 +7,16 @@ import { createObservability } from "../core.js";
 /** Alias for `createObservability` that reads clearly in server code. */
 export const createNodeObservability = createObservability;
 export { readNodeEnv } from "../env.js";
+function requestPath(url) {
+    if (!url)
+        return "unknown";
+    try {
+        return new URL(url, "https://observability.invalid").pathname || "/";
+    }
+    catch {
+        return url.split(/[?#]/u, 1)[0] || "unknown";
+    }
+}
 /**
  * Report a request-scoped error with consistent context (request id, method,
  * url). Use from framework error handlers:
@@ -22,7 +32,7 @@ export function captureRequestError(observability, request, error) {
     observability.captureException(error, {
         tags: {
             method: request.method ?? "unknown",
-            url: request.url ?? "unknown",
+            path: requestPath(request.url),
         },
         extra: {
             reqId: request.id,

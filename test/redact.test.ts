@@ -46,6 +46,14 @@ describe("redactSensitiveUrl", () => {
     expect(result).toContain("token=abc");
   });
 
+  it("supports app-specific keys without disabling the defaults", () => {
+    const result = redactSensitiveUrl("https://x.com/?g=sharecode&token=abc", {
+      additionalQueryKeys: new Set(["g"]),
+    });
+    expect(result).toContain("g=%5BFiltered%5D");
+    expect(result).toContain("token=%5BFiltered%5D");
+  });
+
   it("filters query params case-insensitively", () => {
     const result = redactSensitiveUrl("https://x.com/?TOKEN=abc");
     expect(result).toContain("TOKEN=%5BFiltered%5D");

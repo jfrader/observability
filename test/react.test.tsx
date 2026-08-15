@@ -95,7 +95,7 @@ describe("ObservabilityErrorBoundary", () => {
 
   it("supports function fallbacks and onError hooks", () => {
     const captureException = vi.fn();
-    const onError = vi.fn();
+    const onError = vi.fn(() => ({ tags: { boundary: "root" }, extra: { handled: true } }));
     const obs = {
       appName: "app",
       environment: "test",
@@ -123,6 +123,13 @@ describe("ObservabilityErrorBoundary", () => {
 
     expect(screen.getByText("caught: kaboom")).toBeDefined();
     expect(onError).toHaveBeenCalledTimes(1);
+    expect(captureException).toHaveBeenCalledWith(
+      expect.any(Error),
+      expect.objectContaining({
+        tags: { boundary: "root" },
+        extra: expect.objectContaining({ componentStack: expect.stringContaining("Boom"), handled: true }),
+      }),
+    );
   });
 
   it("is safe without a provider", () => {

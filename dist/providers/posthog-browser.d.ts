@@ -1,17 +1,20 @@
 /**
  * PostHog (browser) strategy. Requires the optional peer `posthog-js`.
  *
- * Defaults: pageviews captured, autocapture off, session recording off —
+ * Defaults: SPA pageviews captured, autocapture off, session recording off —
  * keep the free tier and privacy simple. Apps can opt in per-feature.
  */
+import { type RedactUrlOptions } from "../redact.js";
 import type { AnalyticsProvider } from "../types.js";
 export interface PosthogBrowserConfig {
     key: string;
     /** e.g. `https://us.i.posthog.com` */
     host: string;
+    /** Scrub credentials/tokens from URL-like event properties. Default true. */
+    redact?: boolean | RedactUrlOptions;
     options?: {
-        /** Default true. */
-        capture_pageview?: boolean;
+        /** Default `history_change` for initial + SPA route pageviews. */
+        capture_pageview?: boolean | "history_change";
         /** Default false. */
         autocapture?: boolean;
         /** Default true. */

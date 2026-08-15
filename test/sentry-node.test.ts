@@ -23,7 +23,12 @@ describe("createSentryNodeErrorReporter", () => {
   it("inits with dsn and errors-only tracing by default", () => {
     createSentryNodeErrorReporter({ dsn: "dsn://y", environment: "production" });
     expect(init).toHaveBeenCalledWith(
-      expect.objectContaining({ dsn: "dsn://y", environment: "production", tracesSampleRate: 0 }),
+      expect.objectContaining({
+        dsn: "dsn://y",
+        environment: "production",
+        tracesSampleRate: 0,
+        sendDefaultPii: false,
+      }),
     );
   });
 

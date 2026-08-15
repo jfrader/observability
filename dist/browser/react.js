@@ -32,8 +32,11 @@ export class ObservabilityErrorBoundary extends Component {
         return { error };
     }
     componentDidCatch(error, info) {
-        this.props.onError?.(error, info);
-        this.context?.captureException(error, { extra: { componentStack: info.componentStack } });
+        const context = this.props.onError?.(error, info);
+        this.context?.captureException(error, {
+            ...context,
+            extra: { componentStack: info.componentStack, ...context?.extra },
+        });
     }
     render() {
         if (this.state.error) {

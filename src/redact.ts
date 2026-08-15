@@ -35,6 +35,8 @@ const STANDALONE_LONG_TOKEN =
 export interface RedactUrlOptions {
   /** Query keys to scrub; defaults to {@link SENSITIVE_QUERY_KEYS}. */
   queryKeys?: ReadonlySet<string>;
+  /** App-specific query keys to scrub in addition to the defaults. */
+  additionalQueryKeys?: ReadonlySet<string>;
   /** Regex to scrub long tokens embedded in the value (applied to the whole string). */
   tokenRegex?: RegExp;
 }
@@ -50,13 +52,15 @@ export interface RedactUrlOptions {
  */
 export function redactSensitiveUrl(value: string, options?: RedactUrlOptions): string {
   const queryKeys = options?.queryKeys ?? SENSITIVE_QUERY_KEYS;
+  const additionalQueryKeys = options?.additionalQueryKeys;
   let scrubbed = redactLongTokens(value, options?.tokenRegex);
 
   try {
     const absolute = /^[a-z][a-z\d+.-]*:/i.test(scrubbed);
     const parsed = new URL(scrubbed, "https://redaction.invalid");
     for (const key of Array.from(parsed.searchParams.keys())) {
-      if (queryKeys.has(key.toLowerCase())) {
+      const normalizedKey = key.toLowerCase();
+      if (queryKeys.has(normalizedKey) || additionalQueryKeys?.has(normalizedKey)) {
         parsed.searchParams.set(key, "[Filtered]");
       }
     }
