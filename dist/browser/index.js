@@ -12,4 +12,5 @@ export { createBeaconAnalytics } from "../beacon.js";
 export * from "../redact.js";
 export { readBrowserEnv } from "../env.js";
 export { ObservabilityProvider, ObservabilityErrorBoundary, useObservability, useTrack, } from "./react.js";
+export { isDynamicImportError, useVersionReload, } from "./version.js";
 //# sourceMappingURL=index.js.map
