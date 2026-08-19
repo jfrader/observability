@@ -35,3 +35,9 @@ jfrader apps.
 - Release: bump `version` in `package.json` + `package-lock.json`, commit,
   tag `v<version>` (annotated). The workflow publishes to npmjs + GitHub
   Packages. npmjs needs the trusted publisher configured once per package.
+
+## Linear workflow
+
+- Track project work in Linear, project **Observability**: https://linear.app/gurisitosgames/project/observability-014e6c252dd7
+- New ideas are added as Linear issues. Agents pick up issues, log the work being done on each issue (status, notes, dates), and move completed issues to Done.
+- Read the `linear-workflow` skill (global: `~/.config/opencode/skills/linear-workflow/SKILL.md`) before creating or updating any issue.
