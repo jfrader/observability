@@ -136,6 +136,14 @@ Node (`readNodeEnv()`): same names without the `VITE_` prefix.
   to strip share codes; never throws.
 - Noop fallbacks: no provider configured → no network calls, no console noise.
 
+## Agent skill
+
+The package ships `skills/observability/SKILL.md`, an agent-facing integration
+workflow covering browser and server setup, privacy and identity boundaries,
+event design, release/source-map conventions, and live verification. Agent
+clients that discover dependency skills can load it directly from the installed
+package; other clients can point their project skill configuration at that file.
+
 ## Publishing
 
 Primary flow (like changelog): push an annotated `v<package-version>` tag from
