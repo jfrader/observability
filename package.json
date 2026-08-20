@@ -1,6 +1,6 @@
 {
   "name": "@jfrader/observability",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "packageManager": "npm@11.18.0",
   "description": "Strategy-based observability for small apps: error tracking (Sentry, pluggable) and analytics (PostHog, Plausible/Umami-style beacon, pluggable) behind one tiny API. Zero runtime dependencies.",
   "type": "module",
@@ -72,7 +72,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "publishConfig": {
     "access": "public"
@@ -107,7 +108,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "check": "npm run typecheck && npm test && npm run build",
+    "check": "npm run typecheck && npm test && npm run build && npm run check:package",
+    "check:package": "node scripts/check-package-files.mjs",
     "prepare": "npm run build",
     "prepublish": "npm run build",
     "prepublishOnly": "npm run check"
