@@ -73,6 +73,12 @@ const track = useTrack();
 track("game_completed", { score: 12 });
 ```
 
+### Version reload (deprecated)
+
+New-deploy detection moved to `@jfrader/pwa-updater`. The version-reload
+exports remain here temporarily for migration and will be removed in a future
+version.
+
 ## Node (server) quick start
 
 ```ts
