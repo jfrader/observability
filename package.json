@@ -119,7 +119,7 @@
     "prepublishOnly": "npm run check"
   },
   "devDependencies": {
-    "@jfrader/pwa-updater": "github:jfrader/pwa-updater",
+    "@jfrader/pwa-updater": "https://registry.npmjs.org/@jfrader/pwa-updater/-/pwa-updater-0.1.0.tgz",
     "@sentry/node": "^10.70.0",
     "@sentry/react": "^10.64.0",
     "@testing-library/dom": "^10.4.0",
