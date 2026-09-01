@@ -1,6 +1,6 @@
 {
   "name": "@jfrader/observability",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "packageManager": "npm@11.18.0",
   "description": "Strategy-based observability for small apps: error tracking (Sentry, pluggable) and analytics (PostHog, Plausible/Umami-style beacon, pluggable) behind one tiny API. Zero runtime dependencies.",
   "type": "module",
@@ -79,7 +79,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@jfrader/pwa-updater": "*",
     "@sentry/node": "*",
     "@sentry/react": "*",
     "posthog-js": "*",
@@ -87,9 +86,6 @@
     "react": "*"
   },
   "peerDependenciesMeta": {
-    "@jfrader/pwa-updater": {
-      "optional": true
-    },
     "@sentry/node": {
       "optional": true
     },
@@ -119,7 +115,6 @@
     "prepublishOnly": "npm run check"
   },
   "devDependencies": {
-    "@jfrader/pwa-updater": "https://registry.npmjs.org/@jfrader/pwa-updater/-/pwa-updater-0.1.0.tgz",
     "@sentry/node": "^10.70.0",
     "@sentry/react": "^10.64.0",
     "@testing-library/dom": "^10.4.0",

@@ -73,11 +73,11 @@ const track = useTrack();
 track("game_completed", { score: 12 });
 ```
 
-### Version reload (deprecated)
+### Version reload
 
-New-deploy detection moved to `@jfrader/pwa-updater`. The version-reload
-exports remain here temporarily for migration and will be removed in a future
-version.
+New-deploy detection lives in `@jfrader/pwa-updater`. The deprecated re-export
+from observability was removed in 0.4.0 — import `useVersionReload` and
+`isDynamicImportError` from `@jfrader/pwa-updater` instead.
 
 ## Node (server) quick start
 
