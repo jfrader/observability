@@ -13,4 +13,3 @@ export { createBeaconAnalytics } from "../beacon.js";
 export * from "../redact.js";
 export { readBrowserEnv } from "../env.js";
 export { ObservabilityProvider, ObservabilityErrorBoundary, type ObservabilityErrorBoundaryProps, useObservability, useTrack, } from "./react.js";
-export { isDynamicImportError, useVersionReload, type VersionReloadOptions, type VersionReloadState, } from "./version.js";
