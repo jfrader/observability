@@ -1,5 +1,11 @@
 # @jfrader/observability
 
+[![npm version](https://img.shields.io/npm/v/@jfrader/observability?style=flat)](https://www.npmjs.com/package/@jfrader/observability)
+[![npm downloads](https://img.shields.io/npm/dm/@jfrader/observability?style=flat)](https://www.npmjs.com/package/@jfrader/observability)
+[![ci](https://img.shields.io/github/actions/workflow/status/jfrader/observability/ci.yml?branch=main&style=flat&label=ci)](https://github.com/jfrader/observability/actions)
+[![license](https://img.shields.io/github/license/jfrader/observability?style=flat)](./LICENSE)
+[![node](https://img.shields.io/node/v/@jfrader/observability?style=flat)](https://www.npmjs.com/package/@jfrader/observability)
+
 Strategy-based observability for small apps, one tiny API, zero runtime
 dependencies. Error tracking (Sentry by default) and analytics (PostHog by
 default) behind a strategy pattern, so you can switch providers — or drop
