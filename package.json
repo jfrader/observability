@@ -114,6 +114,9 @@
     "prepublish": "npm run build",
     "prepublishOnly": "npm run check"
   },
+  "overrides": {
+    "tinypool": "^2.2.0"
+  },
   "devDependencies": {
     "@sentry/node": "^10.70.0",
     "@sentry/react": "^10.64.0",
